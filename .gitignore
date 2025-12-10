@@ -1,0 +1,7 @@
+node_modules
+.next
+dist
+.env
+logs
+
+exped360-backend/.env

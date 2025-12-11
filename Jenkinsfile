@@ -4,7 +4,7 @@ pipeline {
     environment {
         SERVER_IP = '213.199.58.144'
         SSH_USER = 'root'
-        REMOTE_DIR = '~/exped360'
+        REMOTE_DIR = '~/VisiteHub'
     }
 
     stages {
@@ -59,8 +59,8 @@ pipeline {
                             else
                                 echo "No containers running!"
                                 docker ps -a
-                                docker logs exped360-frontend || true
-                                docker logs exped360-backend || true
+                                docker logs VisiteHub-frontend || true
+                                docker logs VisiteHub-backend || true
                                 exit 1
                             fi
                         '

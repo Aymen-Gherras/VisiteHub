@@ -28,8 +28,8 @@ pipeline {
                                 echo "WARNING: Using .env.example. Please configure .env on the server."
                             fi
                             
-                            docker-compose down --remove-orphans
-                            docker-compose up -d --build
+                            docker compose down --remove-orphans
+                            docker compose up -d --build
                             docker system prune -f
                         '
                     """

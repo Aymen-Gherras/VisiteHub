@@ -20,7 +20,7 @@ pipeline {
                         tar --exclude='node_modules' --exclude='.git' --exclude='.next' --exclude='dist' -czf - . | ssh -i \$SSH_KEY -o StrictHostKeyChecking=no ${SSH_USER}@${SERVER_IP} "tar -xzf - -C ${REMOTE_DIR}"
                         
                         # 3. Deploy using Docker Compose
-                        ssh -i \$SSH_KEY -o StrictHostKeyChecking=no ${SSH_USER}@${SERVER_IP} '
+                        ssh -i \$SSH_KEY -o StrictHostKeyChecking=no ${SSH_USER}@${SERVER_IP} 'bash -s' << 'ENDSSH'
                             cd ${REMOTE_DIR}
                             # Create .env file if it doesn't exist
                             if [ ! -f .env ]; then
@@ -28,10 +28,18 @@ pipeline {
                                 echo "WARNING: Using .env.example. Please configure .env on the server."
                             fi
                             
-                            docker compose down --remove-orphans
-                            docker compose up -d --build
+                            # Determine correct docker compose command
+                            if docker compose version >/dev/null 2>&1; then
+                                CMD="docker compose"
+                            else
+                                CMD="docker-compose"
+                            fi
+                            echo "Using: \$CMD"
+
+                            \$CMD down --remove-orphans
+                            \$CMD up -d --build
                             docker system prune -f
-                        '
+ENDSSH
                     """
                 }
             }

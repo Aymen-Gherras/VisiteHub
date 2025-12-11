@@ -2,7 +2,10 @@ version: '3.8'
 
 services:
   frontend:
-    build: ./exped360-main-work
+    build:
+      context: ./exped360-main-work
+      args:
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://213.199.58.144:4000}
     container_name: VisiteHub-frontend
     ports:
       - "3001:3001"
